@@ -5,6 +5,14 @@
 	<title>Random Imgur Images</title>
 	<style type='text/css'>
 		body { background-color: #dddddd; color: #000000; overflow-y: visible; }
+
+		.zoom {
+			transition: transform .2s;
+		}
+
+		.zoom:hover {
+			transform:scale(4);
+		}
 		
 		.warning { font-weight: bold; color: #ff0000; }
 		
@@ -26,7 +34,7 @@
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 	<script type='text/javascript'>
 		// taken from evilinternet(?), original source long gone
-		window.num_images = 120;
+		window.num_images = 36;
 		window.char_length = 5;
 		//window.char_length = 7;
 		
@@ -52,7 +60,7 @@
 						self.hunt(function(id) {
 							self.done++;
 							
-							$(images_el).append("<a href=\"http://i.imgur.com/"+ id +".jpg\" target=\"_blank\" rel=\"noreferrer\"><img src=\"http://i.imgur.com/"+ id +"s.png\" height=\"110\" width=\"110\" /></a>");
+							$(images_el).append("<a href=\"http://i.imgur.com/"+ id +".jpg\" target=\"_blank\" rel=\"noreferrer\"><img src=\"http://i.imgur.com/"+ id +"s.png\" height=\"195\" width=\"195\" class="zoom"/></a>");
 							
 							self.update();
 						});
