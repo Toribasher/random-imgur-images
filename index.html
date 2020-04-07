@@ -3,16 +3,11 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 	<title>Random Imgur Images</title>
-	<style type='text/css'>
+	<style type="text/css">
 		body { background-color: #dddddd; color: #000000; overflow-y: visible; }
 
-		.zoom {
-			transition: width, height .2s;
-		}
-
-		.zoom:hover {
-			width: 400px;
-			height: 400px;
+		#clickable {
+			cursor: pointer;
 		}
 
 		#overlay {
@@ -30,12 +25,19 @@
 		}
 
 		#special_image_holder {
+		  max-width: 100%;
+		  max-height: 100%;
 		  position: absolute;
 		  top: 50%;
 		  left: 50%;
-		  font-size: 50px;
 		  color: white;
 		  transform: translate(-50%,-50%);
+		}
+
+		#special_image {
+		  user-select: none;
+		  width: 100%;
+		  height: 100%;
 		}
 		
 		.warning { font-weight: bold; color: #ff0000; }
@@ -55,12 +57,12 @@
 		<div id="images"></div> 
 	</center>
 
-	<div id="overlay" onclick="off()">
+	<div id="overlay" onclick="off(event)">
   		<div id="special_image_holder"><img id="special_image"></img></div>
 	</div>
 	
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-	<script type='text/javascript'>
+	<script type="text/javascript">
 		// taken from evilinternet(?), original source long gone
 		window.num_images = 36;
 		window.char_length = 5;
@@ -68,12 +70,17 @@
 		
 		imgurcache = new Array();
 
-		function on(image) {
-			document.getElementById("overlay").style.display = "block";
-			document.getElementById("special_image").src = image
+		function on(ev, image) {
+			if (ev.button == 0) {
+				document.getElementById("overlay").style.display = "block";
+				document.getElementById("special_image").src = image;
+			}
+			else if (ev.button == 1) {
+				window.open(image, "_blank");
+			}
 		}
 
-		function off() {
+		function off(ev) {
 			document.getElementById("overlay").style.display = "none";
 		}
 		
@@ -97,7 +104,7 @@
 						self.hunt(function(id) {
 							self.done++;
 							
-							$(images_el).append("<a target=\"_blank\" rel=\"noreferrer\"><img src=\"http://i.imgur.com/"+ id +".png\" height=\"195\" width=\"195\" onclick=\"on(this.src)\"></a>");
+							$(images_el).append("<a target=\"_blank\" rel=\"noreferrer\"><img src=\"http://i.imgur.com/"+ id +".png\" height=\"195\" width=\"195\" id=\"clickable\" onmouseup=\"on(event, this.src)\"></a>");
 							
 							self.update();
 						});
@@ -168,7 +175,7 @@
 				}
 			};
 			
-			$("#random").on('click', function() {
+			$("#random").on("click", function() {
 				Imgur.fetch(window.num_images);
 			});
 		});
